@@ -1,46 +1,43 @@
-# 🏛️ Department & Employee Management System - Day 11 & 12
+# 🏛️ Department & Employee Management System – Day 11 & 12
 
-A Spring Boot REST API service for managing departments, employees, and projects, using a layered architecture with JPA, JPQL, and proper error handling.
+A **Spring Boot REST API** service for managing **departments**, **employees**, and **projects**, designed with a layered architecture, JPQL, and robust error handling.
 
 ---
 
 ## 📋 Overview
 
-This system models a company's organizational structure with entities such as `Department`, `Employee`, `Project`, and `ProjectAssignment`. It supports operations like department CRUD, employee search by salary range, department views with employee counts, and more.
+This system models an organization's structure, enabling CRUD and search operations across `Department`, `Employee`, and `Project` entities, with support for analytical queries like employee counts and salary filters.
 
 ---
 
 ## 🏗 Architecture
 
-Follows the standard layered Spring Boot architecture:
+Built using a standard layered Spring Boot architecture:
 
-- **Model Layer:** JPA entities with relationships
-- **Repository Layer:** JPQL-based Spring Data repositories
-- **Service Layer:** Business logic and exception handling
-- **Controller Layer:** RESTful APIs
-- **Global Exception Handler:** Centralized error responses
+* **Model Layer:** JPA entities with relationships
+* **Repository Layer:** JPQL-based Spring Data repositories
+* **Service Layer:** Business logic, validations, exception handling
+* **Controller Layer:** RESTful APIs
+* **Global Exception Handler:** Centralized error responses
 
 ---
 
 ## ✨ Features
 
 ### ✅ Department
-- Get all departments
-- Get department by ID
-- Add a new department with unique ID check
-- Update an existing department
-- Delete department
-- Search department by name (partial match)
-- View department with employee count
-- Get employee count in a department
-- Get all department names
+
+* 🔍 Search by department name (partial match)
+* 📊 View department details with employee count
+* 🔢 Get employee count by department ID
+* 📚 List all department names
 
 ### ✅ Employee
-- Find employees with salary between a and b
-- Future support for project assignment querying
+
+* 💰 Find employees with salary between a and b
 
 ### ✅ Project
-- Manage project data (internal support through project assignments)
+
+* ⚙️ Manage project information (via project assignments)
 
 ---
 
@@ -48,23 +45,70 @@ Follows the standard layered Spring Boot architecture:
 
 ### 📄 Department APIs
 
-| Endpoint                               | Method | Description                              |
-|----------------------------------------|--------|------------------------------------------|
-| `/departments`                         | GET    | Get all departments                      |
-| `/departments/{id}`                    | GET    | Get department by ID                     |
-| `/departments`                         | POST   | Add new department                       |
-| `/departments/{id}`                    | PUT    | Update department                        |
-| `/departments/{id}`                    | DELETE | Delete department                        |
-| `/departments/names`                   | GET    | Get all department names                 |
-| `/departments/search/{name}`          | GET    | Search departments by name (partial)     |
-| `/departments/count/{dept_id}`         | GET    | Get employee count in department         |
-| `/departments/view/count/{id}`         | GET    | Get department details with employee count |
+| Endpoint                       | Method | Description                                |
+| ------------------------------ | ------ | ------------------------------------------ |
+| `/departments/names`           | GET    | Get all department names                   |
+| `/departments/search/{name}`   | GET    | Search departments by name (partial)       |
+| `/departments/count/{dept_id}` | GET    | Get employee count in a department         |
+| `/departments/view/count/{id}` | GET    | Get department details with employee count |
 
 ### 👤 Employee APIs
 
-| Endpoint                                  | Method | Description                              |
-|-------------------------------------------|--------|------------------------------------------|
-| `/employees/salary/{a}/{b}`               | GET    | Find employees with salary between a & b |
+| Endpoint                    | Method | Description                              |
+| --------------------------- | ------ | ---------------------------------------- |
+| `/employees/salary/{a}/{b}` | GET    | Find employees with salary between a & b |
+
+---
+
+## 📤 Example Output
+
+### 1. 📊 Get Employee Count in Department
+
+**Request:** `GET /departments/count/3`
+
+**Response:**
+
+![1 Get Employee Count in Department](https://github.com/user-attachments/assets/0edc2f31-23ab-4717-810b-b088f83d53f8)
+
+---
+
+### 2. 📚 Get Department Names
+
+**Request:** `GET /departments/names`
+
+**Response:**
+
+![2 Get Department Names](https://github.com/user-attachments/assets/45ad0c59-439f-4108-bf48-9742a7e1ff9e)
+
+---
+
+### 3. 💰 Find Employees Within Salary Range
+
+**Request:** `GET /employees/salary/40000/80000`
+
+**Response:**
+
+![3 Find Employees Within Salary Range](https://github.com/user-attachments/assets/112717c2-ec74-4456-b588-b5318c6ccb9a)
+
+---
+
+### 4. 🔍 Search Departments by Name
+
+**Request:** `GET /departments/search/mark`
+
+**Response:**
+
+![4 Search Departments by Name](https://github.com/user-attachments/assets/ce877512-ae05-4292-8dda-879d91bf5f2d)
+
+---
+
+### 5. 👁️ View Department with Employee Count
+
+**Request:** `GET /departments/view/count/2`
+
+**Response:**
+
+![5 View Department with Employee Count](https://github.com/user-attachments/assets/bd08cf49-003b-42d6-9be9-b12959a80bb2)
 
 ---
 
@@ -77,25 +121,11 @@ Follows the standard layered Spring Boot architecture:
 }
 ```
 
-| Exception Type          | HTTP Status | Description             |
-| ----------------------- | ----------- | ----------------------- |
-| EntityNotFoundException | 404         | Department not found    |
-| DuplicateKeyException   | 400         | Duplicate department ID |
-| Exception               | 500         | Generic server error    |
-
----
-
-## 🛠 Technology Stack
-
-* Java 17+
-* Spring Boot 3.x
-* Spring Data JPA (Hibernate)
-* JPQL & Custom Queries
-* MySQL / H2 (company DB)
-* Maven
-* Jackson (JSON handling)
-* Lombok (optional)
-* Spring REST ControllerAdvice
+| Exception Type            | HTTP Status | Description             |
+| ------------------------- | ----------- | ----------------------- |
+| `EntityNotFoundException` | 404         | Department not found    |
+| `DuplicateKeyException`   | 400         | Duplicate department ID |
+| `Exception`               | 500         | Generic server error    |
 
 ---
 
@@ -108,7 +138,7 @@ Follows the standard layered Spring Boot architecture:
 
 ### ⚙️ Configuration
 
-Update your `application.properties`:
+Update `application.properties`:
 
 ```properties
 spring.application.name=employeeapp
@@ -122,53 +152,6 @@ spring.jpa.show-sql=true
 
 ---
 
-## 🧠 Business Logic Summary
-
-### ➕ Add Department
-
-* Validates ID uniqueness
-* Saves department
-* Throws `DuplicateKeyException` if ID exists
-
-### 🔍 Get Department by ID
-
-* Returns department if found
-* Throws `EntityNotFoundException` otherwise
-
-### ✏️ Update Department
-
-* Checks existence
-* Updates department or throws error
-
-### 🗑️ Delete Department
-
-* Checks existence
-* Deletes or throws not found exception
-
----
-
-## 📤 Example Output
-
-### ➕ Add Success
-
-```json
-{
-  "statusCode": 201,
-  "message": "Department created successfully"
-}
-```
-
-### ❌ Duplicate ID Error
-
-```json
-{
-  "statusCode": 400,
-  "errorMessage": "Department with ID already exists"
-}
-```
-
----
-
 ## 📄 License
 
-This project is a part of an academic curriculum and is intended for learning purposes.
+This project is part of an academic curriculum and is intended solely for educational purposes.
